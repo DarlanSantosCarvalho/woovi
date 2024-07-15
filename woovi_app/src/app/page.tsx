@@ -132,7 +132,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="py-3">
+            <div className="absolute top-4 right-5">
               <Radio
                 checked={selectedValue === "4x"}
                 onChange={handleChange}
