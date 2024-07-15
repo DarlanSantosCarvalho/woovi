@@ -22,7 +22,7 @@ export default function Home() {
         <div className="w-[100%] flex justify-center flex-col">
           <div
             className={`flex justify-between relative mt-10 border-2 border-gray-400 p-5 m-5 rounded-xl ${
-              selectedValue === "1x" ? "border-verdeWoovi" : ""
+              selectedValue === "1x" ? "border-verdeWoovi" : "border-gray-400"
             }`}
           >
             <span className="text-sm font-bold border border-3 px-3 py-1 bg-gray-300 rounded-3xl border-gray-300 absolute top-[-16px]">
@@ -59,7 +59,7 @@ export default function Home() {
         <div className="w-[100%] flex justify-center flex-col">
           <div
             className={`flex justify-between relative border-2 border-gray-400 px-5 mx-5 rounded-xl ${
-              selectedValue === "2x" ? "border-verdeWoovi" : ""
+              selectedValue === "2x" ? "border-verdeWoovi" : "border-gray-400"
             }`}
           >
             <span className="text-sm font-bold border border-3 px-3 py-1 bg-gray-300 rounded-3xl border-gray-300 absolute top-[-16px]">
@@ -89,7 +89,7 @@ export default function Home() {
           </div>
           <div
             className={`flex justify-between relative border-2 border-gray-400 px-5 mx-5 rounded-xl ${
-              selectedValue === "3x" ? "border-verdeWoovi" : ""
+              selectedValue === "3x" ? "border-verdeWoovi" : "border-gray-400"
             }`}
           >
             <div className="p-5">
@@ -116,7 +116,7 @@ export default function Home() {
           </div>
           <div
             className={`flex justify-between relative border-2 border-gray-400 px-5 mx-5 rounded-xl ${
-              selectedValue === "4x" ? "border-verdeWoovi" : ""
+              selectedValue === "4x" ? "border-verdeWoovi" : "border-gray-400"
             }`}
           >
             <div className="p-5">
@@ -148,7 +148,7 @@ export default function Home() {
           </div>
           <div
             className={`flex justify-between relative border-2 border-gray-400 px-5 mx-5 rounded-xl ${
-              selectedValue === "5x" ? "border-verdeWoovi" : ""
+              selectedValue === "5x" ? "border-verdeWoovi" : "border-gray-400"
             }`}
           >
             <div className="p-5">
@@ -175,7 +175,7 @@ export default function Home() {
           </div>
           <div
             className={`flex justify-between relative border-2 border-gray-400 px-5 mx-5 rounded-xl ${
-              selectedValue === "6x" ? "border-verdeWoovi" : ""
+              selectedValue === "6x" ? "border-verdeWoovi" : "border-gray-400"
             }`}
           >
             <div className="p-5">
@@ -202,7 +202,7 @@ export default function Home() {
           </div>
           <div
             className={`flex justify-between relative border-2 border-gray-400 px-5 mx-5 rounded-xl ${
-              selectedValue === "7x" ? "border-verdeWoovi" : ""
+              selectedValue === "7x" ? "border-verdeWoovi" : "border-gray-400"
             }`}
           >
             <div className="p-5">
