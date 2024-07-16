@@ -9,9 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        azulWoovi: "#133A6F",
-        verdeWoovi: "#34B78A",
-        cinzaWoovi: "#AFAFAF",
+        amarelo: "#f49e12",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
