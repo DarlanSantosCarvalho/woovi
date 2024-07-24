@@ -66,8 +66,7 @@ export default function Cadastro() {
       url: "https://api.brasilaberto.com/v1/zipcode/41098030",
       responseType: "stream",
     }).then(function (response) {
-      const responseData = response.data;
-      console.log(responseData);
+      console.log(JSON.parse(response.data));
     });
   }
 
