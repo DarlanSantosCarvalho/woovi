@@ -3,8 +3,8 @@ import { useState } from "react";
 import Logo from "../assets/Logo.png";
 import Image from "next/image";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Link from "next/link";
 
 type Inputs = {
   username: string;
@@ -19,15 +19,10 @@ export default function MainPage() {
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
   function changePasswordToText() {
     setShowPassword(!showPassword);
-  }
-
-  function logIn() {
-    router.push("/metodoPagamento");
   }
 
   return (
@@ -98,6 +93,13 @@ export default function MainPage() {
                 type="submit"
                 value="Login"
               />
+
+              <h2 className="text-xl font-bold text-white mt-10">
+                Não tem cadastro?{" "}
+                <span className="underline cursor-pointer">
+                  <Link href={"/cadastro"}>Cadastre-se agora</Link>
+                </span>
+              </h2>
             </div>
           </div>
         </main>
