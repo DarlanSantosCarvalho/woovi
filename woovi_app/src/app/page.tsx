@@ -2,14 +2,27 @@
 import { useState } from "react";
 import Logo from "../assets/Logo.png";
 import Image from "next/image";
-import { FaEye } from "react-icons/fa";
-import { FaEyeSlash } from "react-icons/fa";
-import { useRouter } from "next/router";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
-export default function mainPage() {
+export default function MainPage() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: string) => console.log(data);
+
+  console.log(watch("example"));
   const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
+
+  function logIn() {
+    router.push("/metodoPagamento");
+  }
 
   function changePasswordToText() {
     setShowPassword(!showPassword);
@@ -57,12 +70,12 @@ export default function mainPage() {
             </div>
 
             <button
-              onClick={() => router.push("/metodoPagamento")}
+              onClick={logIn}
               className="py-4 rounded-xl mt-10 text-2xl font-bold w-[40%] placeholder: text-center md:w-[40%] lg:w-[10%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
             >
               Login
             </button>
-          </div>{" "}
+          </div>
         </div>
       </main>
       <html className="bg-laranja"></html>
