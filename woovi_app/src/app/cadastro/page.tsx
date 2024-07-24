@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import Logo from "../../assets/Logo.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
 
 type Inputs = {
   username: string;
@@ -19,10 +20,57 @@ type Inputs = {
 
 export default function Cadastro() {
   const [showPassword, setShowPassword] = useState(false);
+  const [cpf, setCpf] = useState();
+  const [rg, setRg] = useState();
+  const [cep, setCep] = useState();
 
   function changePasswordToText() {
     setShowPassword(!showPassword);
   }
+
+  function handleCpfChange(event: any) {
+    const notFormattedCpf = event.target.value;
+    const formattedCpf = notFormattedCpf
+      .replace(/\D/g, "")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1-$2")
+      .replace(/(-\d{2})\d+?$/, "$1");
+    setCpf(formattedCpf);
+  }
+
+  function handleRgChange(event: any) {
+    const notFormattedRg = event.target.value;
+    const formattedRg = notFormattedRg
+      .replace(/\D/g, "")
+      .replace(/(\d{2})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1-$2")
+      .replace(/(-\d{2})\d+?$/, "$1");
+    setRg(formattedRg);
+  }
+
+  function handleCepChange(event: any) {
+    const notFormattedCep = event.target.value;
+    const formattedCep = notFormattedCep
+      .replace(/\D/g, "")
+      .replace(/(\d{5})(\d)/, "$1-$2")
+      .replace(/(-\d{3})\d+?$/, "$1");
+
+    setCep(formattedCep);
+  }
+
+  function qualquer() {
+    axios({
+      method: "get",
+      url: "https://api.brasilaberto.com/v1/zipcode/41098030",
+      responseType: "stream",
+    }).then(function (response) {
+      const responseData = response.data;
+      console.log(responseData);
+    });
+  }
+
   const {
     register,
     handleSubmit,
@@ -33,6 +81,7 @@ export default function Cadastro() {
   return (
     <body>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <h1 onClick={qualquer}>CLIQUE AQUI</h1>
         <main className="flex flex-col justify-between">
           <Image
             className="mx-auto mt-10"
@@ -121,6 +170,8 @@ export default function Cadastro() {
                 </span>
               )}
               <input
+                value={cpf}
+                onChange={handleCpfChange}
                 {...(register("cpf"),
                 {
                   required: true,
@@ -136,6 +187,8 @@ export default function Cadastro() {
                 </span>
               )}
               <input
+                value={rg}
+                onChange={handleRgChange}
                 {...(register("rg"),
                 {
                   required: true,
@@ -150,6 +203,8 @@ export default function Cadastro() {
                 </span>
               )}
               <input
+                value={cep}
+                onChange={handleCepChange}
                 {...(register("cep"),
                 {
                   required: true,
