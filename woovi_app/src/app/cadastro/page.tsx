@@ -5,6 +5,7 @@ import Image from "next/image";
 import Logo from "../../assets/Logo.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
+import { TbMapPin, TbMapPinCheck } from "react-icons/tb";
 
 type Inputs = {
   username: string;
@@ -60,13 +61,14 @@ export default function Cadastro() {
     setCep(formattedCep);
   }
 
-  function qualquer() {
+  function getAddressByCep() {
     axios({
       method: "get",
-      url: "https://api.brasilaberto.com/v1/zipcode/41098030",
-      responseType: "stream",
+      url: `https://api.brasilaberto.com/v1/zipcode/${cep}`,
+      responseType: "text",
     }).then(function (response) {
-      console.log(JSON.parse(response.data));
+      let resultado = JSON.parse(response.data);
+      console.log(resultado.result.street);
     });
   }
 
@@ -80,7 +82,6 @@ export default function Cadastro() {
   return (
     <body>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <h1 onClick={qualquer}>CLIQUE AQUI</h1>
         <main className="flex flex-col justify-between">
           <Image
             className="mx-auto mt-10"
@@ -201,22 +202,30 @@ export default function Cadastro() {
                   Esse campo é obrigatório
                 </span>
               )}
-              <input
-                value={cep}
-                onChange={handleCepChange}
-                {...(register("cep"),
-                {
-                  required: true,
-                })}
-                type="text"
-                placeholder="CEP"
-                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
-              />
-              {errors.username && (
-                <span className="font-bold text-white">
-                  Esse campo é obrigatório
-                </span>
-              )}
+              <div className="w-[100%] h-24 flex justify-center">
+                <input
+                  value={cep}
+                  onChange={handleCepChange}
+                  {...(register("cep"),
+                  {
+                    required: true,
+                  })}
+                  type="text"
+                  placeholder="CEP"
+                  className="p-4 py-4 mt-10 ml-14 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
+                />
+                {errors.username && (
+                  <span className="font-bold text-white">
+                    Esse campo é obrigatório
+                  </span>
+                )}
+                <button
+                  onClick={getAddressByCep}
+                  className="py-3 rounded-xl ml-3 mt-10 text-2xl font-bold w-[5%] placeholder: text-center md:w-[5%] lg:w-[3%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
+                >
+                  <TbMapPin className="m-auto" size={30} />
+                </button>
+              </div>
               <input
                 {...(register("address"),
                 {
@@ -232,7 +241,7 @@ export default function Cadastro() {
                 </span>
               )}
               <input
-                className="py-4 rounded-xl mt-10 mb-14 text-2xl font-bold w-[40%] placeholder: text-center md:w-[40%] lg:w-[10%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
+                className="py-4 rounded-xl mt-10 mb-14 text-2xl font-bold w-[40%] placeholder: text-center md:w-[40%] lg:w-[15%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
                 type="submit"
                 value="Cadastrar"
               />
