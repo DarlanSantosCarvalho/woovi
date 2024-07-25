@@ -24,6 +24,8 @@ export default function Cadastro() {
   const [cpf, setCpf] = useState();
   const [rg, setRg] = useState();
   const [cep, setCep] = useState();
+  const [isAddressValid, setIsAddressValid] = useState(false);
+  const [address, setAddress] = useState("");
 
   function changePasswordToText() {
     setShowPassword(!showPassword);
@@ -68,7 +70,13 @@ export default function Cadastro() {
       responseType: "text",
     }).then(function (response) {
       let resultado = JSON.parse(response.data);
-      console.log(resultado.result.street);
+      if (resultado.result.street.length > 0) {
+        setAddress(resultado.result.street);
+        setIsAddressValid(true);
+      } else {
+        setAddress("");
+        setIsAddressValid(false);
+      }
     });
   }
 
@@ -227,6 +235,7 @@ export default function Cadastro() {
                 </button>
               </div>
               <input
+                value={address}
                 {...(register("address"),
                 {
                   required: true,
