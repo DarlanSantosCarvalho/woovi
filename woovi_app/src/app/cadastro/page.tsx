@@ -6,6 +6,9 @@ import Logo from "../../assets/Logo.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { TbMapPin, TbMapPinCheck } from "react-icons/tb";
+import moment from "moment";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
   username: string;
@@ -27,12 +30,38 @@ export default function Cadastro() {
   const [isAddressValid, setIsAddressValid] = useState(false);
   const [address, setAddress] = useState("");
 
+  function goodRequest() {
+    toast.success("Sucesso!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+
+  function badRequest() {
+    toast.error("Erro: Corrija os dados inseridos", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+
   function changePasswordToText() {
     setShowPassword(!showPassword);
   }
 
-  function handleCpfChange(event: any) {
-    const notFormattedCpf = event.target.value;
+  function handleCpfChange(value: any) {
+    const notFormattedCpf = value.target.value;
     const formattedCpf = notFormattedCpf
       .replace(/\D/g, "")
       .replace(/(\d{3})(\d)/, "$1.$2")
@@ -42,8 +71,8 @@ export default function Cadastro() {
     setCpf(formattedCpf);
   }
 
-  function handleRgChange(event: any) {
-    const notFormattedRg = event.target.value;
+  function handleRgChange(value: any) {
+    const notFormattedRg = value.target.value;
     const formattedRg = notFormattedRg
       .replace(/\D/g, "")
       .replace(/(\d{2})(\d)/, "$1.$2")
@@ -53,14 +82,30 @@ export default function Cadastro() {
     setRg(formattedRg);
   }
 
-  function handleCepChange(event: any) {
-    const notFormattedCep = event.target.value;
+  function handleCepChange(value: any) {
+    const notFormattedCep = value.target.value;
     const formattedCep = notFormattedCep
       .replace(/\D/g, "")
       .replace(/(\d{5})(\d)/, "$1-$2")
       .replace(/(-\d{3})\d+?$/, "$1");
 
     setCep(formattedCep);
+  }
+
+  function ageFromDateOfBirthday(value: any) {
+    const dateOfBirth = value.target.value;
+    const currentDay = moment();
+    const birthDay = moment(dateOfBirth);
+
+    const age = currentDay.diff(birthDay, "years");
+
+    console.log("Aqui", age);
+
+    if (age >= 18) {
+      window.alert("Você tem mais de 18 anos");
+    } else {
+      window.alert("Você não tem mais de 18 anos");
+    }
   }
 
   function getAddressByCep() {
@@ -164,6 +209,7 @@ export default function Cadastro() {
                 )}
               </div>
               <input
+                onChange={ageFromDateOfBirthday}
                 {...(register("birthday"),
                 {
                   required: true,
@@ -227,12 +273,16 @@ export default function Cadastro() {
                     Esse campo é obrigatório
                   </span>
                 )}
-                <button
+                <div
                   onClick={getAddressByCep}
-                  className="py-3 rounded-xl ml-3 mt-10 text-2xl font-bold w-[5%] placeholder: text-center md:w-[5%] lg:w-[3%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
+                  className="py-3 cursor-pointer rounded-xl ml-3 mt-10 text-2xl font-bold w-[5%] placeholder: text-center md:w-[5%] lg:w-[3%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
                 >
-                  <TbMapPin className="m-auto" size={30} />
-                </button>
+                  {isAddressValid ? (
+                    <TbMapPinCheck className="m-auto" size={30} />
+                  ) : (
+                    <TbMapPin className="m-auto" size={30} />
+                  )}
+                </div>
               </div>
               <input
                 value={address}
@@ -242,7 +292,7 @@ export default function Cadastro() {
                 })}
                 type="text"
                 placeholder="Endereço"
-                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
+                className="p-4 py-4 mt-10 cursor-none rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
               />
               {errors.username && (
                 <span className="font-bold text-white">
