@@ -7,7 +7,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { TbMapPin, TbMapPinCheck } from "react-icons/tb";
 import moment from "moment";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
@@ -101,10 +101,8 @@ export default function Cadastro() {
 
     console.log("Aqui", age);
 
-    if (age >= 18) {
-      window.alert("Você tem mais de 18 anos");
-    } else {
-      window.alert("Você não tem mais de 18 anos");
+    if (age < 18) {
+      toast.error("Você não tem a idade mínima permitida");
     }
   }
 
@@ -112,20 +110,28 @@ export default function Cadastro() {
     axios({
       method: "get",
       url: `https://api.brasilaberto.com/v1/zipcode/${cep}`,
-      responseType: "text",
-    }).then(function (response) {
-      let resultado = JSON.parse(response.data);
-      console.log("Aqui", resultado);
-      if (resultado.result.street.length > 0) {
-        setAddress(
-          `${resultado.result.street}, ${resultado.result.city} - ${resultado.result.state} `
-        );
-        setIsAddressValid(true);
-      } else {
-        setAddress("");
-        setIsAddressValid(false);
-      }
-    });
+      responseType: "json",
+    })
+      .then(function (response) {
+        if (response.status === 200) {
+          setAddress(
+            `${response.data.result.street}, ${response.data.result.city} - ${response.data.result.state}`
+          );
+          toast.success("Sucesso!");
+          setIsAddressValid(true);
+        }
+      })
+      .catch(function (error) {
+        if (error.response && error.response.status === 404) {
+          setAddress("");
+          setIsAddressValid(false);
+          toast.warning("Erro! Corrija os dados inseridos");
+        } else {
+          setAddress("");
+          setIsAddressValid(false);
+          toast.error("Erro! Tente novamente mais tarde.");
+        }
+      });
   }
 
   const {
@@ -260,6 +266,7 @@ export default function Cadastro() {
                 </span>
               )}
               <div className="w-[100%] h-24 flex justify-center">
+                <ToastContainer></ToastContainer>
                 <input
                   value={cep}
                   onChange={handleCepChange}
