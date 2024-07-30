@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sunshine Bank",
-  description: "Um banco moderno para o seu dia-a-dia",
+  title: "Teste",
+  description: "Teste",
 };
 
 export default function RootLayout({
