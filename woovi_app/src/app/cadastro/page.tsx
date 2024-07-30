@@ -115,8 +115,11 @@ export default function Cadastro() {
       responseType: "text",
     }).then(function (response) {
       let resultado = JSON.parse(response.data);
+      console.log("Aqui", resultado);
       if (resultado.result.street.length > 0) {
-        setAddress(resultado.result.street);
+        setAddress(
+          `${resultado.result.street}, ${resultado.result.city} - ${resultado.result.state} `
+        );
         setIsAddressValid(true);
       } else {
         setAddress("");
@@ -156,7 +159,7 @@ export default function Cadastro() {
                 })}
                 type="text"
                 placeholder="Nome de usuário"
-                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
+                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
               {errors.username && (
                 <span className="font-bold text-white">
@@ -170,7 +173,7 @@ export default function Cadastro() {
                 })}
                 type="email"
                 placeholder="Email"
-                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
+                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
               {errors.username && (
                 <span className="font-bold text-white">
@@ -178,7 +181,7 @@ export default function Cadastro() {
                 </span>
               )}
 
-              <div className="relative w-[60%] md:w-[40%] lg:w-[18%] mt-10">
+              <div className="relative w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%] mt-10">
                 <input
                   {...(register("password"),
                   {
@@ -216,7 +219,7 @@ export default function Cadastro() {
                 })}
                 type="date"
                 placeholder="Data de nascimento"
-                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
+                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
               {errors.username && (
                 <span className="font-bold text-white">
@@ -233,7 +236,7 @@ export default function Cadastro() {
                 })}
                 type="text"
                 placeholder="CPF"
-                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
+                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
               {errors.username && (
                 <span className="font-bold text-white">
@@ -249,7 +252,7 @@ export default function Cadastro() {
                 })}
                 type="text"
                 placeholder="RG"
-                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
+                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
               {errors.username && (
                 <span className="font-bold text-white">
@@ -266,7 +269,7 @@ export default function Cadastro() {
                   })}
                   type="text"
                   placeholder="CEP"
-                  className="p-4 py-4 mt-10 ml-14 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
+                  className="p-4 py-4 mt-10 ml-14 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
                 />
                 {errors.username && (
                   <span className="font-bold text-white">
@@ -292,7 +295,7 @@ export default function Cadastro() {
                 })}
                 type="text"
                 placeholder="Endereço"
-                className="p-4 py-4 mt-10 cursor-none rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
+                className="p-4 py-4 mt-10 cursor-none rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
               {errors.username && (
                 <span className="font-bold text-white">
