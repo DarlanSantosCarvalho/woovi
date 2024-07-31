@@ -1,27 +1,19 @@
 import { databaseConnection } from "../database/connection.js";
 
 export const postCadastro = (req, res) => {
-  const name = req.name;
-  const email = req.email;
-  const password = req.password;
-  const birthday = req.birthday;
-  const cpf = req.cpf;
-  const rg = req.rg;
-  const cep = req.cep;
-  const address = req.address;
+  console.log("Hereee", req.body);
+  const nome = req.body.nome;
+  const email = req.body.email;
+  const password = req.body.password;
+  const birthday = req.body.birthday;
+  const cpf = req.body.cpf;
+  const rg = req.body.rg;
+  const cep = req.body.cep;
+  const address = req.body.address;
   try {
     databaseConnection.query(
       "INSERT INTO cadastro (name, email, password, birthday, cpf, rg, cep, address) VALUES (?,?,?,?,?,?,?,?)",
-      [
-        "Darlan1712",
-        "darlan171201@gmail.com",
-        "senhateste",
-        "2001-12-17",
-        "000.000.000-00",
-        "00.000.000-00",
-        "00000-000",
-        "Rua A, Salvador - Bahia",
-      ]
+      [nome, email, password, birthday, cpf, rg, cep, address]
     );
     console.log("Cadastro efetuado com sucesso");
     return res

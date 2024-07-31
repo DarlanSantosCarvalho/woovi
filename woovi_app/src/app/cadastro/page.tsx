@@ -11,7 +11,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
-  name: string;
+  nome: string;
   email: string;
   birthday: string;
   phone: string;
@@ -73,8 +73,6 @@ export default function Cadastro() {
 
     const age = currentDay.diff(birthDay, "years");
 
-    console.log("Aqui", age);
-
     if (age < 18) {
       toast.error("Você não tem a idade mínima permitida");
     }
@@ -117,17 +115,17 @@ export default function Cadastro() {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (data: Inputs) => {
     axios
       .post("http://localhost:8080/Cadastro", {
-        name: e.name,
-        email: e.email,
-        password: e.password,
-        birthday: e.birthday,
-        cpf: e.cpf,
-        rg: e.rg,
-        cep: e.cep,
-        address: e.address,
+        nome: data.nome,
+        email: data.email,
+        password: data.password,
+        birthday: data.birthday,
+        cpf: data.cpf,
+        rg: data.rg,
+        cep: data.cep,
+        address: data.address,
       })
       .then((res) => {
         if (res.data.Status === "200") {
@@ -138,7 +136,8 @@ export default function Cadastro() {
         }
       })
       .catch((error) => {
-        toast.error("Ocorreu um erro ao tentar efetuar o cadastro.", error);
+        toast.error("Ocorreu um erro ao tentar efetuar o cadastro.");
+        console.log("Aqui", error, data);
       });
   };
 
@@ -160,48 +159,38 @@ export default function Cadastro() {
           <div>
             <div className="flex flex-col justify-center items-center">
               <input
-                {...(register("name"),
-                {
-                  required: true,
-                })}
+                {...register("nome", { required: true })}
                 type="text"
                 placeholder="Nome completo"
                 className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
-              {errors.name && (
-                <span className="font-bold text-white">
+              {errors.nome && (
+                <span className="font-bold text-white text-center">
                   Esse campo é obrigatório
                 </span>
               )}
               <input
-                {...(register("email"),
-                {
-                  required: true,
-                })}
+                {...register("email", { required: true })}
                 type="email"
                 placeholder="Email"
                 className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
-              {errors.name && (
-                <span className="font-bold text-white">
+              {errors.email && (
+                <span className="font-bold text-white text-center">
                   Esse campo é obrigatório
                 </span>
               )}
 
               <div className="relative w-[60%] md:w-[40%] lg:w-[30%] mt-10">
                 <input
-                  {...(register("password"),
-                  {
-                    required: true,
-                    minLength: 7,
-                  })}
+                  {...register("password", { required: true, minLength: 7 })}
                   type={showPassword ? "text" : "password"}
                   placeholder="Senha"
                   className="p-4 text-center py-4 rounded-lg w-full placeholder:text-center"
                 />
                 {errors.password && (
-                  <span className="font-bold text-white">
-                    Esse campo é obrigatório
+                  <span className="font-bold text-white text-center">
+                    Preencha corretamente
                   </span>
                 )}
                 {showPassword ? (
@@ -219,50 +208,40 @@ export default function Cadastro() {
                 )}
               </div>
               <input
-                onChange={ageFromDateOfBirthday}
-                {...(register("birthday"),
-                {
-                  required: true,
-                })}
+                {...register("birthday", { required: true })}
                 type="date"
                 placeholder="Data de nascimento"
                 className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
+                onChange={ageFromDateOfBirthday}
               />
-              {errors.name && (
-                <span className="font-bold text-white">
+              {errors.birthday && (
+                <span className="font-bold text-white text-center">
                   Esse campo é obrigatório
                 </span>
               )}
               <input
                 value={cpf}
-                onChange={handleCpfChange}
-                {...(register("cpf"),
-                {
-                  required: true,
-                  maxLength: 14,
-                })}
+                {...register("cpf", { required: true })}
                 type="text"
                 placeholder="CPF"
                 className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
+                onChange={handleCpfChange}
               />
-              {errors.name && (
-                <span className="font-bold text-white">
+              {errors.cpf && (
+                <span className="font-bold text-white text-center">
                   Esse campo é obrigatório
                 </span>
               )}
               <input
                 value={rg}
-                onChange={handleRgChange}
-                {...(register("rg"),
-                {
-                  required: true,
-                })}
+                {...register("rg", { required: true })}
                 type="text"
                 placeholder="RG"
+                onChange={handleRgChange}
                 className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
-              {errors.name && (
-                <span className="font-bold text-white">
+              {errors.rg && (
+                <span className="font-bold text-white text-center">
                   Esse campo é obrigatório
                 </span>
               )}
@@ -270,20 +249,12 @@ export default function Cadastro() {
                 <ToastContainer></ToastContainer>
                 <input
                   value={cep}
-                  onChange={handleCepChange}
-                  {...(register("cep"),
-                  {
-                    required: true,
-                  })}
+                  {...register("cep", { required: true })}
                   type="text"
                   placeholder="CEP"
+                  onChange={handleCepChange}
                   className="p-4 py-4 mt-10 ml-14 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
                 />
-                {errors.name && (
-                  <span className="font-bold text-white">
-                    Esse campo é obrigatório
-                  </span>
-                )}
                 <div
                   onClick={getAddressByCep}
                   className="py-3 cursor-pointer rounded-xl ml-3 mt-10 text-2xl font-bold w-[5%] placeholder: text-center md:w-[5%] lg:w-[3%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
@@ -294,22 +265,20 @@ export default function Cadastro() {
                     <TbMapPin className="m-auto" size={30} />
                   )}
                 </div>
+                {errors.cep && (
+                  <span className="font-bold text-white text-center">
+                    Esse campo é obrigatório
+                  </span>
+                )}
               </div>
               <input
                 value={address}
-                {...(register("address"),
-                {
-                  required: true,
-                })}
+                {...register("address", { required: true })}
                 type="text"
                 placeholder="Endereço"
                 className="p-4 py-4 mt-10 cursor-none rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
-              {errors.name && (
-                <span className="font-bold text-white">
-                  Esse campo é obrigatório
-                </span>
-              )}
+
               <input
                 className="py-4 cursor-pointer rounded-xl mt-10 mb-14 text-2xl font-bold w-[40%] placeholder: text-center md:w-[40%] lg:w-[15%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
                 type="submit"
