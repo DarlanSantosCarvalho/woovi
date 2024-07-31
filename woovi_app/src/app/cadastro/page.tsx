@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import Logo from "../../assets/Logo.png";
@@ -11,7 +11,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
-  username: string;
+  name: string;
   email: string;
   birthday: string;
   phone: string;
@@ -29,32 +29,6 @@ export default function Cadastro() {
   const [cep, setCep] = useState();
   const [isAddressValid, setIsAddressValid] = useState(false);
   const [address, setAddress] = useState("");
-
-  function goodRequest() {
-    toast.success("Sucesso!", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  }
-
-  function badRequest() {
-    toast.error("Erro: Corrija os dados inseridos", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  }
 
   function changePasswordToText() {
     setShowPassword(!showPassword);
@@ -134,16 +108,43 @@ export default function Cadastro() {
       });
   }
 
+  const form = useRef(null);
+
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const onSubmit = (e: any) => {
+    axios
+      .post("http://localhost:8080/Cadastro", {
+        name: e.name,
+        email: e.email,
+        password: e.password,
+        birthday: e.birthday,
+        cpf: e.cpf,
+        rg: e.rg,
+        cep: e.cep,
+        address: e.address,
+      })
+      .then((res) => {
+        if (res.data.Status === "200") {
+          toast.success("Cadastro efetuado com sucesso!");
+          reset();
+        } else if (res.data.Status === "500") {
+          toast.error("Ocorreu um erro ao tentar efetuar o cadastro.");
+        }
+      })
+      .catch((error) => {
+        toast.error("Ocorreu um erro ao tentar efetuar o cadastro.", error);
+      });
+  };
 
   return (
     <body>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form ref={form} onSubmit={handleSubmit(onSubmit)}>
         <main className="flex flex-col justify-between">
           <Image
             className="mx-auto mt-10"
@@ -159,15 +160,15 @@ export default function Cadastro() {
           <div>
             <div className="flex flex-col justify-center items-center">
               <input
-                {...(register("username"),
+                {...(register("name"),
                 {
                   required: true,
                 })}
                 type="text"
-                placeholder="Nome de usuário"
+                placeholder="Nome completo"
                 className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
-              {errors.username && (
+              {errors.name && (
                 <span className="font-bold text-white">
                   Esse campo é obrigatório
                 </span>
@@ -181,13 +182,13 @@ export default function Cadastro() {
                 placeholder="Email"
                 className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
-              {errors.username && (
+              {errors.name && (
                 <span className="font-bold text-white">
                   Esse campo é obrigatório
                 </span>
               )}
 
-              <div className="relative w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%] mt-10">
+              <div className="relative w-[60%] md:w-[40%] lg:w-[30%] mt-10">
                 <input
                   {...(register("password"),
                   {
@@ -196,7 +197,7 @@ export default function Cadastro() {
                   })}
                   type={showPassword ? "text" : "password"}
                   placeholder="Senha"
-                  className="p-4 py-4 rounded-lg w-full placeholder:text-center"
+                  className="p-4 text-center py-4 rounded-lg w-full placeholder:text-center"
                 />
                 {errors.password && (
                   <span className="font-bold text-white">
@@ -227,7 +228,7 @@ export default function Cadastro() {
                 placeholder="Data de nascimento"
                 className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
-              {errors.username && (
+              {errors.name && (
                 <span className="font-bold text-white">
                   Esse campo é obrigatório
                 </span>
@@ -244,7 +245,7 @@ export default function Cadastro() {
                 placeholder="CPF"
                 className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
-              {errors.username && (
+              {errors.name && (
                 <span className="font-bold text-white">
                   Esse campo é obrigatório
                 </span>
@@ -260,7 +261,7 @@ export default function Cadastro() {
                 placeholder="RG"
                 className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
-              {errors.username && (
+              {errors.name && (
                 <span className="font-bold text-white">
                   Esse campo é obrigatório
                 </span>
@@ -278,7 +279,7 @@ export default function Cadastro() {
                   placeholder="CEP"
                   className="p-4 py-4 mt-10 ml-14 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
                 />
-                {errors.username && (
+                {errors.name && (
                   <span className="font-bold text-white">
                     Esse campo é obrigatório
                   </span>
@@ -304,13 +305,13 @@ export default function Cadastro() {
                 placeholder="Endereço"
                 className="p-4 py-4 mt-10 cursor-none rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
-              {errors.username && (
+              {errors.name && (
                 <span className="font-bold text-white">
                   Esse campo é obrigatório
                 </span>
               )}
               <input
-                className="py-4 rounded-xl mt-10 mb-14 text-2xl font-bold w-[40%] placeholder: text-center md:w-[40%] lg:w-[15%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
+                className="py-4 cursor-pointer rounded-xl mt-10 mb-14 text-2xl font-bold w-[40%] placeholder: text-center md:w-[40%] lg:w-[15%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
                 type="submit"
                 value="Cadastrar"
               />
