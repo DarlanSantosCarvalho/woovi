@@ -130,9 +130,11 @@ export default function Cadastro() {
       })
       .then((res) => {
         if (res.data.Status === "200") {
-          toast.success("Cadastro efetuado com sucesso!");
+          toast.success("Cadastro efetuado com sucesso.");
           reset();
-        } else if (res.data.Status === "500") {
+        } else if (res.data.Status === "400") {
+          toast.warning("O CPF, RG ou e-mail já foi cadastrada anteriormente.");
+        } else {
           toast.error("Ocorreu um erro ao tentar efetuar o cadastro.");
         }
       })
