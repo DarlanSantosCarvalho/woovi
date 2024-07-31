@@ -21,8 +21,6 @@ export const postCadastro = (req, res) => {
       .json({ Status: "200", Message: "Cadastro efetuado com sucesso" });
   } catch (error) {
     console.error("Ocorreu um erro ao cadastrar o usuário: ", error);
-    return res
-      .status(500)
-      .json({ Status: "500", Message: "Erro. Corrija os dados inseridos" });
+    return res.status(500).json({ Status: "500", Message: error });
   }
 };

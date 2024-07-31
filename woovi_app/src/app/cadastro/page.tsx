@@ -116,6 +116,7 @@ export default function Cadastro() {
   } = useForm<Inputs>();
 
   const onSubmit = (data: Inputs) => {
+    console.log("Estou enviando esses dados: ", data);
     axios
       .post("http://localhost:8080/Cadastro", {
         nome: data.nome,
@@ -137,7 +138,7 @@ export default function Cadastro() {
       })
       .catch((error) => {
         toast.error("Ocorreu um erro ao tentar efetuar o cadastro.");
-        console.log("Aqui", error, data);
+        console.log("Aqui", error);
       });
   };
 

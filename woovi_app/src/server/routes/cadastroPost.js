@@ -1,5 +1,5 @@
 import express from "express";
-import { postCadastro } from "../controllers/cadastroPost";
+import { postCadastro } from "../controllers/cadastroPost.js";
 
 const router = express.Router();
 
