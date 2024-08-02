@@ -30,7 +30,7 @@ export const postCadastro = (req, res) => {
               Message: "Usuário já cadastrado.",
             });
           } else {
-            bcrypt.hash(password, saltRounds, function (passwordHashed) {
+            bcrypt.hash(password, saltRounds, function (err, passwordHashed) {
               databaseConnection.query(
                 "INSERT INTO cadastro (name, email, password, birthday, cpf, rg, cep, address) VALUES (?,?,?,?,?,?,?,?)",
                 [nome, email, passwordHashed, birthday, cpf, rg, cep, address]

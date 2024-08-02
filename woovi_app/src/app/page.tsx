@@ -7,7 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Link from "next/link";
 
 type Inputs = {
-  username: string;
+  cpf: string;
   password: string;
 };
 
@@ -20,9 +20,21 @@ export default function MainPage() {
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
   const [showPassword, setShowPassword] = useState(false);
+  const [cpf, setCpf] = useState();
 
   function changePasswordToText() {
     setShowPassword(!showPassword);
+  }
+
+  function handleCpfChange(value: any) {
+    const notFormattedCpf = value.target.value;
+    const formattedCpf = notFormattedCpf
+      .replace(/\D/g, "")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1-$2")
+      .replace(/(-\d{2})\d+?$/, "$1");
+    setCpf(formattedCpf);
   }
 
   return (
@@ -42,28 +54,21 @@ export default function MainPage() {
           <div>
             <div className="flex flex-col justify-center items-center">
               <input
-                {...(register("username"),
-                {
-                  required: true,
-                  minLength: 7,
-                  maxLength: 40,
-                })}
+                value={cpf}
+                {...register("cpf", { required: true })}
                 type="text"
-                placeholder="Email de acesso"
-                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[18%]"
+                placeholder="CPF"
+                className="p-4 py-4 mt-10 rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[20%]"
+                onChange={handleCpfChange}
               />
-              {errors.username && (
+              {errors.cpf && (
                 <span className="font-bold text-white">
                   Esse campo é obrigatório
                 </span>
               )}
-              <div className="relative w-[60%] md:w-[40%] lg:w-[18%] mt-10">
+              <div className="relative w-[60%] md:w-[40%] lg:w-[25%] mt-10">
                 <input
-                  {...(register("password"),
-                  {
-                    required: true,
-                    minLength: 7,
-                  })}
+                  {...(register("password"), { required: true, minLength: 7 })}
                   type={showPassword ? "text" : "password"}
                   placeholder="Senha"
                   className="p-4 py-4 rounded-lg w-full placeholder:text-center"
@@ -88,11 +93,13 @@ export default function MainPage() {
                 )}
               </div>
 
-              <input
+              <button
                 className="py-4 rounded-xl mt-10 text-2xl font-bold w-[40%] placeholder: text-center md:w-[40%] lg:w-[10%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
                 type="submit"
                 value="Login"
-              />
+              >
+                Login
+              </button>
 
               <h2 className="text-xl font-bold text-white mt-10">
                 Não tem cadastro?{" "}

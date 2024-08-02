@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 const app = express();
 import { postCadastro } from "./controllers/cadastroPost.js";
+import { loginCadastro } from "./controllers/loginPost.js";
 
 app.use(
   cors({
@@ -20,5 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/Cadastro", postCadastro);
+
+app.post("/Login", loginCadastro);
 
 app.listen(8080, console.log("Ouvindo na porta 8080"));

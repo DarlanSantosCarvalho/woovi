@@ -9,6 +9,7 @@ import { TbMapPin, TbMapPinCheck } from "react-icons/tb";
 import moment from "moment";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 type Inputs = {
   nome: string;
@@ -282,11 +283,19 @@ export default function Cadastro() {
                 className="p-4 py-4 mt-10 cursor-none rounded-lg w-[60%] placeholder: text-center md:w-[40%] lg:w-[30%]"
               />
 
-              <input
-                className="py-4 cursor-pointer rounded-xl mt-10 mb-14 text-2xl font-bold w-[40%] placeholder: text-center md:w-[40%] lg:w-[15%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
+              <button
+                className="py-4 cursor-pointer rounded-xl mt-10 mb-8 text-2xl font-bold w-[40%] placeholder: text-center md:w-[40%] lg:w-[15%] bg-white hover:bg-orange-400 hover:text-white hover:duration-300"
                 type="submit"
                 value="Cadastrar"
-              />
+              >
+                Cadastrar
+              </button>
+
+              <Link href={"/"}>
+                <h2 className="text-white font-bold underline mb-10 text-xl">
+                  Já tem Login? Clique aqui
+                </h2>
+              </Link>
             </div>
           </div>
         </main>
