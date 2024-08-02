@@ -1,4 +1,6 @@
 import { databaseConnection } from "../database/connection.js";
+import bcrypt from "bcrypt";
+const saltRounds = 10;
 
 export const postCadastro = (req, res) => {
   const nome = req.body.nome;
@@ -28,10 +30,12 @@ export const postCadastro = (req, res) => {
               Message: "Usuário já cadastrado.",
             });
           } else {
-            databaseConnection.query(
-              "INSERT INTO cadastro (name, email, password, birthday, cpf, rg, cep, address) VALUES (?,?,?,?,?,?,?,?)",
-              [nome, email, password, birthday, cpf, rg, cep, address]
-            );
+            bcrypt.hash(password, saltRounds, function (passwordHashed) {
+              databaseConnection.query(
+                "INSERT INTO cadastro (name, email, password, birthday, cpf, rg, cep, address) VALUES (?,?,?,?,?,?,?,?)",
+                [nome, email, passwordHashed, birthday, cpf, rg, cep, address]
+              );
+            });
             console.log("Cadastro efetuado com sucesso");
             return res.status(200).json({
               Status: "200",
