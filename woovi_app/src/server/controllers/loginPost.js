@@ -7,27 +7,32 @@ export const loginCadastro = (req, res) => {
 
   try {
     databaseConnection.query(
-      "SELECT * FROM cadastro WHERE cpf = ? AND password = ?",
+      "SELECT cpf, password FROM cadastro WHERE cpf = ?",
       [cpf],
       (error, result) => {
         if (error) {
+          console.log(error);
           return res.status(400).json({ Message: "Erro ao fazer Login" });
         } else if (result.length > 0) {
           const user = result[0];
-          bcrypt.compare(user.password, password, (err, passwordMatch) => {
+          bcrypt.compare(password, user.password, (err, passwordMatch) => {
             if (err) {
-              return res.status(400).json({ Message: "Senha incorreta" });
+              return res
+                .status(400)
+                .json({ Message: "Erro ao comparar senha" });
             } else if (passwordMatch) {
               return res.status(200).json({ Message: "Login efetuado" });
+            } else {
+              return res.status(400).json({ Message: "Senha incorreta" });
             }
           });
+        } else {
+          return res.status(400).json({ Message: "Usuário não encontrado" });
         }
       }
     );
-    if (res.length > 0) {
-      console.log("Login efetuado");
-    } else {
-      console.log("Login não efetuado");
-    }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ Message: "Erro no servidor" });
+  }
 };
