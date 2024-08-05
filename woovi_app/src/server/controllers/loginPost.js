@@ -21,9 +21,9 @@ export const loginCadastro = (req, res) => {
                 .status(400)
                 .json({ Message: "Erro ao comparar senha" });
             } else if (passwordMatch) {
-              return res.status(200).json({ Message: "Login efetuado" });
+              return res.json({ Status: "200", Message: "Login efetuado" });
             } else {
-              return res.status(400).json({ Message: "Senha incorreta" });
+              return res.json({ Status: "400", Message: "Senha incorreta" });
             }
           });
         } else {

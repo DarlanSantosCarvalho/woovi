@@ -5,6 +5,10 @@ import Image from "next/image";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Link from "next/link";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 type Inputs = {
   cpf: string;
@@ -12,12 +16,34 @@ type Inputs = {
 };
 
 export default function MainPage() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit = (data: Inputs) => {
+    axios
+      .post("http://localhost:8080/Login", {
+        cpf: data.cpf,
+        password: data.password,
+      })
+      .then((res) => {
+        console.log("Aqui", res);
+        if (res.data.Status === "200") {
+          toast.success("Cadastro efetuado com sucesso!");
+          // router.push("/metodoPagamento");
+        } else if (res.data.Status === "400") {
+          toast.warning("Senha ou CPF incorretos");
+        } else {
+          toast.error("Ocorreu um erro ao tentar efetuar o cadastro.");
+        }
+      })
+      .catch((error) => {
+        toast.error("Ocorreu um erro ao tentar efetuar o cadastro.");
+        console.log("Aqui", error);
+      });
+  };
 
   const [showPassword, setShowPassword] = useState(false);
   const [cpf, setCpf] = useState();
@@ -52,6 +78,7 @@ export default function MainPage() {
             Seja bem-vindo ao Sunshine Bank
           </h1>
           <div>
+            <ToastContainer></ToastContainer>
             <div className="flex flex-col justify-center items-center">
               <input
                 value={cpf}
@@ -68,10 +95,10 @@ export default function MainPage() {
               )}
               <div className="relative w-[60%] md:w-[40%] lg:w-[25%] mt-10">
                 <input
-                  {...(register("password"), { required: true, minLength: 7 })}
+                  {...register("password", { required: true, minLength: 7 })}
                   type={showPassword ? "text" : "password"}
                   placeholder="Senha"
-                  className="p-4 py-4 rounded-lg w-full placeholder:text-center"
+                  className="p-4 py-4 rounded-lg text-center w-full placeholder:text-center"
                 />
                 {errors.password && (
                   <span className="font-bold text-white">
@@ -100,7 +127,6 @@ export default function MainPage() {
               >
                 Login
               </button>
-
               <h2 className="text-xl font-bold text-white mt-10">
                 Não tem cadastro?{" "}
                 <span className="underline cursor-pointer">
